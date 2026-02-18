@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & The Future of Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --accent: #e63946;
+    --gold: #c9a84c;
+    --muted: #6b6b6b;
+    --card-bg: #fffdf8;
+    --border: rgba(10,10,10,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 6rem 3rem 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 9vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    margin-bottom: 2rem;
+  }
+
+  .hero-headline .line-accent {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 40ch;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1rem 2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: all 0.3s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover { background: var(--accent); }
+
+  .hero-cta .arrow { transition: transform 0.3s; }
+  .hero-cta:hover .arrow { transform: translateX(4px); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .hero-stat-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .hero-stat-block:first-child {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .hero-stat-block:last-child {
+    border-top: 1px solid var(--border);
+    background: #fff8f0;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 7vw, 7rem);
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .hero-stat-block:first-child .stat-num { color: var(--gold); }
+
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .stat-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    opacity: 0.6;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  .scroll-line {
+    width: 2rem;
+    height: 1px;
+    background: var(--muted);
+    animation: scrollPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { width: 2rem; }
+    50% { width: 3.5rem; }
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 6rem 3rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: attr(data-num);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .section-intro {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  /* ============================
+     SECTION 1: WHAT IS AI
+  ============================ */
+  .ai-explained { background: var(--paper); }
+
+  .ai-explained-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .ai-main-card {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-main-card::before {
+    content: 'AI';
+    position: absolute;
+    right: -1rem;
+    top: -2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14rem;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .ai-main-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .ai-main-card p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    opacity: 0.8;
+    max-width: 80ch;
+  }
+
+  .analogy-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .analogy-box::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 5rem;
+    color: var(--accent);
+    opacity: 0.15;
+    line-height: 1;
+  }
+
+  .analogy-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .analogy-role {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .analogy-box h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .analogy-box p {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .upskill-card {
+    background: var(--accent);
+    color: white;
+    padding: 2.5rem;
+  }
+
+  .upskill-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .upskill-card p {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    opacity: 0.9;
+  }
+
+  .upskill-list {
+    list-style: none;
+    margin-top: 1.5rem;
+  }
+
+  .upskill-list li {
+    font-size: 0.8rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.9;
+  }
+
+  .upskill-list li::before { content: '→'; }
+
+  /* ============================
+     SECTION 2: SCOPE OF IMPACT
+  ============================ */
+  .impact-scope { background: #0a0a0a; color: var(--paper); }
+
+  .impact-scope .section-title { color: var(--paper); }
+  .impact-scope .section-intro { color: rgba(255,255,255,0.5); }
+  .impact-scope .section-label { color: var(--gold); }
+  .impact-scope .section-label::before { color: rgba(255,255,255,0.3); }
+
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .impact-card {
+    background: #0a0a0a;
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .impact-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .impact-card:hover { background: #141414; }
+  .impact-card:hover::after { transform: scaleX(1); }
+
+  .impact-risk {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+  }
+
+  .risk-high { background: rgba(230,57,70,0.15); color: #ff6b75; }
+  .risk-medium { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .risk-evolving { background: rgba(100,180,255,0.1); color: #64b4ff; }
+
+  .impact-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    color: var(--paper);
+  }
+
+  .impact-card .job-role {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .impact-card p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.25rem;
+  }
+
+  .impact-example {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--gold);
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ============================
+     SECTION 3: RECENT EXAMPLES
+  ============================ */
+  .real-world { background: var(--paper); }
+
+  .examples-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .example-featured {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    position: relative;
+  }
+
+  .example-featured::before {
+    content: 'CASE STUDY';
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .company-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+
+  .example-featured h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .example-featured p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .roles-affected {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .role-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .role-tag.high { border-color: var(--accent); color: var(--accent); }
+
+  .examples-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .example-mini {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 2rem;
+  }
+
+  .example-mini .company-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .example-mini .year {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .example-mini p {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .example-mini .roles-hit {
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .all-examples {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 1.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .ex-card {
+    background: var(--card-bg);
+    padding: 2rem;
+  }
+
+  .ex-card .co {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .ex-card .yr {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .ex-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .ex-card .roles {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ============================
+     SECTION 4: EVALUATOR
+  ============================ */
+  .evaluator {
+    background: #0a0a0a;
+    color: var(--paper);
+    padding: 6rem 3rem;
+  }
+
+  .evaluator .section-label { color: var(--gold); }
+  .evaluator .section-label::before { color: rgba(255,255,255,0.2); }
+  .evaluator .section-title { color: var(--paper); }
+  .evaluator .section-intro { color: rgba(255,255,255,0.5); }
+
+  .eval-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .eval-form-panel {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2.5rem;
+  }
+
+  .eval-form-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    color: var(--paper);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--paper);
+    padding: 0.85rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 100px; }
+
+  .form-group select option {
+    background: #141414;
+  }
+
+  .eval-btn {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+  }
+
+  .eval-btn:hover { background: #ff4757; }
+
+  .eval-btn:disabled {
+    background: #333;
+    cursor: not-allowed;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .eval-result-panel {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .result-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .result-placeholder .icon {
+    font-size: 3rem;
+    opacity: 0.3;
+  }
+
+  .result-placeholder p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-width: 30ch;
+  }
+
+  /* Result content */
+  .result-content { display: none; }
+  .result-content.visible { display: block; }
+
+  .result-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .result-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    color: var(--paper);
+  }
+
+  .result-role-co {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  .risk-meter {
+    margin: 1.5rem 0;
+  }
+
+  .risk-meter-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem;
+  }
+
+  .risk-bar-wrap {
+    background: rgba(255,255,255,0.08);
+    height: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .risk-bar-fill {
+    height: 100%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+
+  .risk-score-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .risk-score-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .overlap-section { margin-top: 1.5rem; }
+
+  .overlap-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.75rem;
+  }
+
+  .overlap-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .overlap-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .overlap-item-text {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    flex: 1;
+  }
+
+  .overlap-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .upskill-section { margin-top: 1.5rem; }
+
+  .upskill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+  }
+
+  .chip {
+    font-size: 0.68rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .chip.priority {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .insight-box {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--gold);
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* LOADING STATE */
+  .loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.3);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  footer .f-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* FADE IN ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .ai-explained-grid { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .examples-layout { grid-template-columns: 1fr; }
+    .all-examples { grid-template-columns: 1fr; }
+    .eval-container { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    .hero-left { padding: 6rem 1.5rem 4rem; }
+    .nav-links { display: none; }
+  }
+  /* READ MORE BUTTON */
+  .read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .read-more-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .read-more-btn.small {
+    font-size: 0.65rem;
+    margin-top: 1rem;
+  }
+
+  .read-more-btn.inverted {
+    color: rgba(255,255,255,0.6);
+    border-color: rgba(255,255,255,0.25);
+  }
+
+  .read-more-btn.inverted:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ============================
+     SECTION 4: BACKFIRE
+  ============================ */
+  .backfire-section { background: var(--paper); }
+
+  .backfire-intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: start;
+  }
+
+  .backfire-pull {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem;
+    position: relative;
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .bq-mark {
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-size: 5rem;
+    color: var(--accent);
+    opacity: 0.2;
+    font-family: 'DM Serif Display', serif;
+    line-height: 1;
+  }
+
+  .bq-attr {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    font-style: normal;
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .backfire-stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .bf-stat {
+    background: var(--card-bg);
+    padding: 2rem 1.5rem;
+  }
+
+  .bf-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .bf-label {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .bf-source {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .backfire-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .bf-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bf-card--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .bf-card--dark p { color: rgba(255,255,255,0.65); }
+
+  .bf-tag {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.25rem 0.6rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    width: fit-content;
+  }
+
+  .bf-tag--fail { background: rgba(230,57,70,0.12); color: var(--accent); }
+  .bf-tag--warn { background: rgba(201,168,76,0.12); color: #a07c2a; }
+  .bf-tag--insight { background: rgba(100,180,255,0.1); color: #2277aa; }
+  .bf-card--dark .bf-tag--fail { background: rgba(230,57,70,0.2); color: #ff6b75; }
+  .bf-card--dark .bf-tag--insight { background: rgba(100,180,255,0.1); color: #64b4ff; }
+
+  .bf-company {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+    color: var(--ink);
+  }
+
+  .bf-card--dark .bf-company { color: var(--paper); }
+
+  .bf-year {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .bf-card--dark .bf-year { color: rgba(255,255,255,0.35); }
+
+  .bf-card p {
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .bf-lesson {
+    background: rgba(10,10,10,0.04);
+    border-left: 2px solid var(--gold);
+    padding: 0.75rem 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .bf-card--dark .bf-lesson {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.7);
+  }
+
+  .bf-lesson-label {
+    display: block;
+    font-style: normal;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  /* HIRING TRUTH SECTION */
+  .hiring-truth {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem;
+    margin-top: 0;
+  }
+
+  .ht-header { margin-bottom: 2rem; }
+
+  .hiring-truth .section-label { color: var(--gold); margin-bottom: 0.5rem; }
+  .hiring-truth .section-label::before { color: rgba(255,255,255,0.2); }
+
+  .ht-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.03em;
+    color: var(--paper);
+    line-height: 1;
+  }
+
+  .ht-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .ht-item { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.25rem; }
+
+  .ht-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+
+  .ht-skill {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    color: var(--paper);
+    margin-bottom: 0.5rem;
+  }
+
+  .ht-desc {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @media (max-width: 900px) {
+    .backfire-intro { grid-template-columns: 1fr; }
+    .backfire-stat-row { grid-template-columns: 1fr; }
+    .backfire-grid { grid-template-columns: 1fr; }
+    .ht-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex; align-items:center; gap:1.5rem;">
+    <div class="nav-logo">AI<span>×</span>Work</div>
+    <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--muted); font-weight:500; border-left:1px solid var(--border); padding-left:1.5rem;">By <span style="color:var(--ink); font-weight:500;">Sachit Malik</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#ai-explained">The Shift</a></li>
+    <li><a href="#impact">Impact Scope</a></li>
+    <li><a href="#real-world">Real World</a></li>
+    <li><a href="#backfire">The Backlash</a></li>
+    <li><a href="#evaluator">Evaluate Yourself</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-left">
+    <div class="hero-tag">The Future of Work — 2024 Report &nbsp;·&nbsp; By Sachit Malik</div>
+    <h1 class="hero-headline">
+      Your Job<br>
+      is<br>
+      <span class="line-accent">Changing.</span>
+    </h1>
+    <p class="hero-sub">AI isn't replacing humans—it's replacing tasks. The question is: which of your tasks are already automated, and what do you need to become?</p>
+    <a href="#evaluator" class="hero-cta">Evaluate Your Risk <span class="arrow">→</span></a>
+    <div class="scroll-indicator">
+      <span class="scroll-line"></span>
+      Scroll to explore
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-stat-block">
+        <div class="stat-num">85M</div>
+        <div class="stat-label">Jobs displaced by 2025</div>
+        <div class="stat-sub">World Economic Forum</div>
+      </div>
+      <div class="hero-stat-block">
+        <div class="stat-num">44%</div>
+        <div class="stat-label">of core skills to change in 5 years</div>
+        <div class="stat-sub">Workers who upskill earn 2.5× more</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: WHAT IS AI -->
+<section class="ai-explained" id="ai-explained">
+  <div class="section-label" data-num="01">Understanding the Shift</div>
+  <h2 class="section-title">What AI Actually Does<br>to Your Work</h2>
+  <p class="section-intro">AI doesn't solve problems—it executes solutions. The irreplaceable part of any role is the judgment, creativity, and domain knowledge that precedes execution.</p>
+
+  <div class="ai-explained-grid fade-up">
+    <div class="ai-main-card">
+      <h3>The Execution Layer is Gone.<br>What Remains is Everything Else.</h3>
+      <p>Think of every professional's workflow as two distinct phases: <strong style="color:var(--gold)">the thinking phase</strong>—where you understand a problem, devise a strategy, make trade-offs, and decide on an approach—and <strong style="color:var(--gold)">the execution phase</strong>—where you actually write, code, calculate, or produce the output. AI has quietly absorbed the execution phase. A software developer no longer needs to spend 3 hours writing boilerplate code once the architecture is clear in their head—Copilot does it in seconds. A financial analyst no longer manually builds models—GPT-4 generates the spreadsheet. What remains entirely human? Knowing what problem to solve, how to frame it, and whether the solution makes sense.</p>
+    </div>
+
+    <div class="analogy-box">
+      <div class="analogy-icon">💻</div>
+      <div class="analogy-role">Software Developer</div>
+      <h4>The Code Was Never the Hard Part</h4>
+      <p>A senior dev spends 80% of effort in architecture, debugging logic, and understanding requirements. The 20% that is "just writing code"? GitHub Copilot handles that today. The dev who doesn't adapt will be replaced. The one who directs AI like a senior engineer directs a junior—will be worth 5× more.</p>
+    </div>
+
+    <div class="analogy-box">
+      <div class="analogy-icon">⚖️</div>
+      <div class="analogy-role">Corporate Lawyer</div>
+      <h4>Research & Drafting: Automated</h4>
+      <p>Harvey AI (used by top law firms) drafts contracts, scans precedents, and flags risk clauses in minutes. Junior associate work—gone. What remains: client strategy, courtroom judgment, ethical nuance, relationship management. The law itself hasn't changed. How you practice it has.</p>
+    </div>
+
+    <div class="analogy-box">
+      <div class="analogy-icon">📊</div>
+      <div class="analogy-role">Data Analyst</div>
+      <h4>Your SQL Queries Write Themselves</h4>
+      <p>Tools like Tableau's Einstein and ChatGPT Advanced Data Analysis can write, run, and visualize queries from plain English. The analyst who still spends 6 hours on data wrangling is being outpaced. The one who asks sharper business questions and interprets findings—is indispensable.</p>
+    </div>
+
+    <div class="upskill-card">
+      <h4>Why Upskill Now?</h4>
+      <p>The window of advantage for early adopters is 18–24 months. After that, AI fluency becomes table stakes—not a differentiator.</p>
+      <ul class="upskill-list">
+        <li>AI tooling is growing 40% every quarter</li>
+        <li>Companies reward AI-native employees 2.5× more</li>
+        <li>Junior roles are disappearing first—not senior</li>
+        <li>Prompt engineering is the new Excel fluency</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: IMPACT SCOPE -->
+<section class="impact-scope" id="impact">
+  <div class="section-label" data-num="02">AI's Reach in Tech</div>
+  <h2 class="section-title">Who's Most<br>At Risk?</h2>
+  <p class="section-intro">Not all jobs are equally exposed. Here's how AI disruption maps across the tech landscape—with specific examples of which tasks are going first.</p>
+
+  <div class="impact-grid fade-up">
+
+    <div class="impact-card">
+      <span class="impact-risk risk-high">🔴 High Risk</span>
+      <h3>QA Engineer</h3>
+      <div class="job-role">Quality Assurance / Testing</div>
+      <p>Manual test case writing, regression testing, and bug reporting are almost entirely automatable. AI testing tools like Mabl, Testim, and GitHub Copilot for tests can self-heal tests and auto-generate test suites from user stories.</p>
+      <div class="impact-example">A QA engineer who spent 6 hours writing Selenium scripts now watches AI generate and run those scripts from a Jira ticket description. The role collapses into "AI test orchestrator."</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-high">🔴 High Risk</span>
+      <h3>Junior Dev (SD1)</h3>
+      <div class="job-role">Software Development — Entry Level</div>
+      <p>The SD1's core deliverable—writing clean, functional code from well-defined specs—is exactly what GitHub Copilot, Cursor, and Claude do. Entry-level development pipelines are shrinking by 30–50% at companies that adopted AI coding tools.</p>
+      <div class="impact-example">Amazon's Q Developer generated 4,500+ of its own code reviews in 2023. Google's internal AI tools now draft 25% of new code commits.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-high">🔴 High Risk</span>
+      <h3>Content Writer</h3>
+      <div class="job-role">Tech Marketing / Documentation</div>
+      <p>Blog posts, product descriptions, API docs, release notes—GPT-4-class models write these at 10× human speed. Staff writer positions at many tech companies dropped 40% in 2023 alone.</p>
+      <div class="impact-example">Buzzfeed laid off its entire writing staff, pivoting to AI-generated content in 2023. CNET and Sports Illustrated followed. Human editors—still needed. Writers for volume—not.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-medium">🟡 Transforming</span>
+      <h3>Data Analyst</h3>
+      <div class="job-role">Business Intelligence / Analytics</div>
+      <p>Routine reporting, dashboard building, and SQL work are accelerating beyond human pace. The analyst role is pivoting from "data wrangler" to "insight interpreter" and business partner.</p>
+      <div class="impact-example">Microsoft Copilot in Excel lets non-analysts build pivot tables and models in seconds. Analysts who survive: those who ask better business questions.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-medium">🟡 Transforming</span>
+      <h3>Product Manager</h3>
+      <div class="job-role">Product / Project Management</div>
+      <p>AI generates PRDs, user stories, roadmap drafts, and competitive analysis. The PM who relies on documentation skills is at risk; the one who drives product direction through customer empathy and strategy is safe.</p>
+      <div class="impact-example">Linear, Notion AI, and Jira's AI features now auto-populate backlogs and sprint plans from vague prompts. PMs are moving upstream into pure strategy roles.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-evolving">🔵 Evolving</span>
+      <h3>ML Engineer</h3>
+      <div class="job-role">AI / Machine Learning</div>
+      <p>Ironically, ML engineers must now work with AI-generated models, auto-ML platforms, and foundation models. The craft is shifting from model building to model evaluation, fine-tuning, and deployment strategy.</p>
+      <div class="impact-example">AutoML platforms (Google Vertex, H2O.ai) generate production-ready models for standard tasks. Human ML engineers are needed for novel problems and alignment work.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-high">🔴 High Risk</span>
+      <h3>Technical Recruiter</h3>
+      <div class="job-role">HR / Talent Acquisition</div>
+      <p>Resume screening, initial interviews, job description writing—fully automatable. AI platforms like Paradox (Olivia), HireVue's AI, and Greenhouse AI handle 80% of recruiter workflows without human involvement.</p>
+      <div class="impact-example">Amazon deployed AI recruiters that auto-interview, score, and rank 10,000 candidates in the time a human handles 10. LinkedIn's AI now writes job posts, messages, and screening questions.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-medium">🟡 Transforming</span>
+      <h3>DevOps Engineer</h3>
+      <div class="job-role">Infrastructure / SRE</div>
+      <p>Infrastructure-as-code generation, incident response playbooks, and log analysis are increasingly AI-driven. But cloud architecture decisions and security judgments remain highly human-dependent.</p>
+      <div class="impact-example">GitHub Copilot for CLI generates bash scripts and Terraform configs from natural language. PagerDuty's AI suggests root cause and auto-assigns incidents.</div>
+    </div>
+
+    <div class="impact-card">
+      <span class="impact-risk risk-evolving">🔵 Evolving</span>
+      <h3>UX Designer</h3>
+      <div class="job-role">Design / Research</div>
+      <p>Figma AI, Adobe Firefly, and Midjourney are generating wireframes, mockups, and assets at scale. Junior design work is shrinking; senior UX thinking—research, strategy, accessibility—remains irreplaceable.</p>
+      <div class="impact-example">Figma's AI auto-generates design variants and component libraries. A 5-person design team can now do the output of 15—but still needs humans to define the right problems to design for.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 3: REAL WORLD -->
+<section class="real-world" id="real-world">
+  <div class="section-label" data-num="03">In The News</div>
+  <h2 class="section-title">Real Layoffs.<br>Real Roles. Real AI.</h2>
+  <p class="section-intro">These aren't projections. These are companies that have already restructured around AI—with documented impact on specific roles.</p>
+
+  <div class="examples-layout fade-up">
+    <div class="example-featured">
+      <div class="company-badge">📌 CASE STUDY</div>
+      <div class="company-badge">IBM — 2023</div>
+      <h3>"We're pausing hiring for roles AI can handle in 5 years."</h3>
+      <p>IBM CEO Arvind Krishna announced in May 2023 that the company would pause or stop hiring for ~7,800 back-office positions—primarily in HR and administration—that could be replaced by AI within 5 years. The announcement marked one of the first clear corporate acknowledgments that AI-driven workforce reduction was not theoretical but imminent and planned.</p>
+      <p>IBM simultaneously increased headcount in software engineering and AI specialties—signaling clearly that the restructuring was a <em>role migration</em>, not a cost-cutting exercise.</p>
+      <div class="roles-affected">
+        <span class="role-tag high">HR Operations</span>
+        <span class="role-tag high">Back-office Admin</span>
+        <span class="role-tag high">Data Entry Roles</span>
+        <span class="role-tag">Finance Operations</span>
+        <span class="role-tag">Procurement</span>
+      </div>
+      <a href="https://www.bloomberg.com/news/articles/2023-05-01/ibm-to-pause-hiring-for-back-office-jobs-that-ai-could-kill" target="_blank" rel="noopener" class="read-more-btn">Read Source → Bloomberg</a>
+    </div>
+
+    <div class="examples-sidebar">
+      <div class="example-mini">
+        <div class="company-name">GitHub / Microsoft</div>
+        <div class="year">2023 — Ongoing</div>
+        <p>Copilot adoption within Microsoft reduced time-to-PR by 55% for enrolled developers. Internal research showed a 26% reduction in junior-level tickets reaching senior engineers—implying lower junior headcount needs in the medium term.</p>
+        <div class="roles-hit">⚡ Most affected: SD1, Junior Engineers, QA</div>
+        <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/" target="_blank" rel="noopener" class="read-more-btn small">GitHub Research →</a>
+      </div>
+      <div class="example-mini">
+        <div class="company-name">Duolingo</div>
+        <div class="year">Jan 2024</div>
+        <p>Cut 10% of its contractor workforce after AI was able to handle content creation tasks at scale. Roles eliminated included translation contractors and content writers who created language-learning exercises.</p>
+        <div class="roles-hit">⚡ Most affected: Content Writers, Translators</div>
+        <a href="https://techcrunch.com/2024/01/09/duolingo-lays-off-10-of-contractors-as-it-shifts-to-ai-content-creation/" target="_blank" rel="noopener" class="read-more-btn small">TechCrunch →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="all-examples fade-up">
+    <div class="ex-card">
+      <div class="co">Google</div>
+      <div class="yr">2024 — Ad Sales Restructure</div>
+      <p>Replaced parts of its ad sales team with AI tools that automatically generate and optimize ad campaigns. Several hundred roles in the "large customer sales" segment were restructured.</p>
+      <div class="roles">Affected: Ad Ops, Campaign Managers, Sales Support</div>
+      <a href="https://www.businessinsider.com/google-layoffs-ad-sales-ai-2024-2" target="_blank" rel="noopener" class="read-more-btn small">Business Insider →</a>
+    </div>
+    <div class="ex-card">
+      <div class="co">Chegg</div>
+      <div class="yr">2023 — Platform Collapse</div>
+      <p>Lost 40% of its stock value after ChatGPT directly replaced its tutoring model. Students who used to pay Chegg for homework help now used GPT-4 for free. Chegg laid off 4% of staff.</p>
+      <div class="roles">Affected: Content Experts, Tutors, Knowledge Workers</div>
+      <a href="https://www.nytimes.com/2023/11/01/business/chegg-chatgpt-tutoring.html" target="_blank" rel="noopener" class="read-more-btn small">New York Times →</a>
+    </div>
+    <div class="ex-card">
+      <div class="co">Dropbox</div>
+      <div class="yr">Apr 2023</div>
+      <p>Laid off 16% of its workforce (500 employees). CEO Drew Houston explicitly cited AI as a driver: "The AI era requires a different mix of skills." Engineering roles not aligned with AI were deprioritized.</p>
+      <div class="roles">Affected: Non-AI Engineers, Sales, Support</div>
+      <a href="https://techcrunch.com/2023/04/27/dropbox-lays-off-500-employees-16-of-staff-blaming-ai-era-and-different-skills-needed/" target="_blank" rel="noopener" class="read-more-btn small">TechCrunch →</a>
+    </div>
+    <div class="ex-card">
+      <div class="co">Amazon</div>
+      <div class="yr">2023 — Alexa Team</div>
+      <p>Restructured its Alexa division to focus on generative AI, laying off hundreds from the older voice AI team. Signaled a full pivot from scripted responses to LLM-based conversation AI.</p>
+      <div class="roles">Affected: Alexa Engineers (NLP, Rules-based), PMs</div>
+      <a href="https://www.businessinsider.com/amazon-alexa-layoffs-generative-ai-pivot-2023-11" target="_blank" rel="noopener" class="read-more-btn small">Business Insider →</a>
+    </div>
+    <div class="ex-card">
+      <div class="co">Klarna</div>
+      <div class="yr">2024 — Support AI</div>
+      <p>Klarna's AI chatbot handles the work of 700 customer service agents in its first month. Company froze new support hires and reduced existing team through attrition. The bot handles 2.3M conversations/month.</p>
+      <div class="roles">Affected: Customer Support Agents, Tier-1 Tech Support</div>
+      <a href="https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/" target="_blank" rel="noopener" class="read-more-btn small">Klarna Press Release →</a>
+    </div>
+    <div class="ex-card">
+      <div class="co">Salesforce</div>
+      <div class="yr">Jan 2024</div>
+      <p>Announced it would not backfill ~700 departing sales positions, instead investing that budget into AI infrastructure and Agentforce. First major case of "AI over headcount" strategy made explicit.</p>
+      <div class="roles">Affected: Inside Sales, Sales Development Reps</div>
+      <a href="https://www.wsj.com/articles/salesforce-wont-replace-workers-laid-off-in-january-amid-ai-push-11675882983" target="_blank" rel="noopener" class="read-more-btn small">Wall Street Journal →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: AI BACKFIRING -->
+<section class="backfire-section" id="backfire">
+  <div class="section-label" data-num="04">The Other Side</div>
+  <h2 class="section-title">When AI<br>Bit Back.</h2>
+  <p class="section-intro">The mass-layoff playbook is unraveling. Companies that moved too fast, too blindly on AI are quietly rehiring—or paying the price in quality, trust, and revenue.</p>
+
+  <div class="backfire-intro fade-up">
+    <div class="backfire-pull">
+      <span class="bq-mark">"</span>
+      We replaced our support team with AI. Six months later, customer satisfaction dropped 34% and churn spiked. We're rebuilding.
+      <span class="bq-attr">— Anonymous VP, SaaS Company (2024 survey via Gartner)</span>
+    </div>
+    <div class="backfire-stat-row">
+      <div class="bf-stat">
+        <div class="bf-num">41%</div>
+        <div class="bf-label">of companies that laid off staff for AI have rehired in the same roles within 12 months</div>
+        <div class="bf-source">— Resume Builder, 2024</div>
+      </div>
+      <div class="bf-stat">
+        <div class="bf-num">68%</div>
+        <div class="bf-label">of AI-first companies report "unexpected human expertise gaps" post-automation</div>
+        <div class="bf-source">— McKinsey State of AI, 2024</div>
+      </div>
+      <div class="bf-stat">
+        <div class="bf-num">3×</div>
+        <div class="bf-label">more expensive to rehire and retrain than to upskill in place, per MIT Sloan study</div>
+        <div class="bf-source">— MIT Sloan Management Review, 2023</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="backfire-grid fade-up">
+
+    <div class="bf-card bf-card--dark">
+      <div class="bf-tag bf-tag--fail">🔴 Backfire Case</div>
+      <div class="bf-company">Klarna — The Plot Twist</div>
+      <div class="bf-year">2025 Update</div>
+      <p>After announcing its AI chatbot replaced 700 agents, Klarna CEO Sebastian Siemiatkowski reversed course in 2025—publicly admitting the company had "gone too far" with automation. Klarna began rehiring customer service staff after discovering AI couldn't handle complex, emotional, or nuanced customer situations. The quality of resolutions dropped, and customer lifetime value eroded.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The Lesson</span>
+        AI handles volume. Humans handle trust. Confusing the two costs customers.
+      </div>
+      <a href="https://fortune.com/2025/03/28/klarna-ceo-ai-replacing-humans-employees-artificial-intelligence/" target="_blank" rel="noopener" class="read-more-btn small inverted">Fortune Report →</a>
+    </div>
+
+    <div class="bf-card">
+      <div class="bf-tag bf-tag--warn">🟡 Quality Collapse</div>
+      <div class="bf-company">CNET / Sports Illustrated</div>
+      <div class="bf-year">2023 — AI Content Scandal</div>
+      <p>Both publications quietly published hundreds of AI-written articles without disclosure. CNET's AI articles contained factual errors in personal finance pieces. Sports Illustrated published AI content under fake author bios with AI-generated headshots. Both faced massive reader backlash, advertiser pullback, and editor resignations. The brand damage outlasted any cost savings.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The Lesson</span>
+        AI content at scale without human editorial oversight destroys brand trust faster than it saves money.
+      </div>
+      <a href="https://www.theguardian.com/technology/2023/nov/27/sports-illustrated-ai-articles-fake-authors" target="_blank" rel="noopener" class="read-more-btn small">The Guardian →</a>
+    </div>
+
+    <div class="bf-card">
+      <div class="bf-tag bf-tag--warn">🟡 Legal Liability</div>
+      <div class="bf-company">Air Canada Chatbot Ruling</div>
+      <div class="bf-year">2024 — Canadian Court Decision</div>
+      <p>Air Canada's AI chatbot gave a passenger incorrect refund policy information. When the passenger acted on the AI's advice, Air Canada tried to disclaim responsibility—claiming "the chatbot is a separate legal entity." The court ruled Air Canada fully liable. The case set a landmark precedent: companies are legally responsible for what their AI says to customers, even if AI-generated and factually wrong.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The Lesson</span>
+        AI automation without human oversight creates legal exposure. Someone must own AI outputs.
+      </div>
+      <a href="https://www.bbc.com/travel/article/20240222-air-canada-chatbot-gave-wrong-information-it-has-to-pay" target="_blank" rel="noopener" class="read-more-btn small">BBC Travel →</a>
+    </div>
+
+    <div class="bf-card">
+      <div class="bf-tag bf-tag--fail">🔴 Talent Drain</div>
+      <div class="bf-company">Tech Industry — Junior Pipeline Crisis</div>
+      <div class="bf-year">2024–2025 Emerging Trend</div>
+      <p>Companies that eliminated junior engineering roles to "let AI do it" are now discovering a critical problem: there's no one left to become senior engineers in 3 years. The junior-to-senior pipeline is breaking. AI can write code, but it can't accumulate the domain expertise, product intuition, and crisis management experience that senior engineers carry. The companies that cut deepest are now reporting a "senior talent vacuum" and paying 3–4× market rate to fill critical roles.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The Lesson</span>
+        Senior engineers are grown from junior ones. Eliminating entry points eliminates future leadership.
+      </div>
+      <a href="https://www.bloomberg.com/news/articles/2024-05-03/ai-coding-tools-are-pushing-entry-level-developers-out" target="_blank" rel="noopener" class="read-more-btn small">Bloomberg →</a>
+    </div>
+
+    <div class="bf-card">
+      <div class="bf-tag bf-tag--warn">🟡 Compliance Risk</div>
+      <div class="bf-company">Workday / HireVue Scrutiny</div>
+      <div class="bf-year">2023–2024 — EEOC Investigations</div>
+      <p>The US Equal Employment Opportunity Commission opened investigations into several companies using AI for hiring decisions after evidence of bias in screening models. HireVue settled lawsuits over its AI interview tool. Companies that replaced human recruiters with AI screening discovered their AI had learned historical hiring biases—discriminating by name, school, zip code, and even speech pattern. Several face ongoing litigation.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The Lesson</span>
+        AI inherits the biases in its training data. Removing human judgment from hiring creates regulatory exposure.
+      </div>
+      <a href="https://www.eeoc.gov/laws/guidance/questions-and-answers-clarify-and-provide-common-interpretation-uniform-guidelines" target="_blank" rel="noopener" class="read-more-btn small">EEOC Guidelines →</a>
+    </div>
+
+    <div class="bf-card">
+      <div class="bf-tag bf-tag--insight">🔵 What Companies Actually Want</div>
+      <div class="bf-company">The Human+AI Talent Profile</div>
+      <div class="bf-year">2024 Hiring Trends</div>
+      <p>The hottest job profiles of 2024–25 aren't "AI replaces human." They're <strong>"humans who direct AI"</strong>: engineers who review AI-generated code for security and architecture flaws, writers who edit and fact-check AI drafts, analysts who interpret AI-surfaced insights with business context, and PMs who define what AI should build. The new premium skill is knowing when NOT to trust AI.</p>
+      <div class="bf-lesson">
+        <span class="bf-lesson-label">The New Hire</span>
+        "AI-augmented" > "AI-replaced." Companies are paying premiums for judgment layered on top of AI fluency.
+      </div>
+      <a href="https://www.linkedin.com/business/talent/blog/talent-strategy/fastest-growing-jobs" target="_blank" rel="noopener" class="read-more-btn small">LinkedIn Jobs Report →</a>
+    </div>
+
+  </div>
+
+  <!-- What companies are actually hiring for -->
+  <div class="hiring-truth fade-up">
+    <div class="ht-header">
+      <div class="section-label" style="margin-bottom:0.5rem;" data-num="↳">What Companies Are Actually Hiring For in 2025</div>
+      <h3 class="ht-title">The Human Skills AI Can't Buy</h3>
+    </div>
+    <div class="ht-grid">
+      <div class="ht-item">
+        <div class="ht-icon">🧠</div>
+        <div class="ht-skill">Critical AI Evaluation</div>
+        <div class="ht-desc">Knowing when AI output is wrong, biased, or dangerous. The ability to audit AI decisions with domain expertise. Highly paid, rare, and growing.</div>
+      </div>
+      <div class="ht-item">
+        <div class="ht-icon">🔗</div>
+        <div class="ht-skill">Systems Thinking</div>
+        <div class="ht-desc">Understanding how components interact at scale. AI can build components; it cannot architect entire sociotechnical systems with human, regulatory, and business constraints.</div>
+      </div>
+      <div class="ht-item">
+        <div class="ht-icon">🤝</div>
+        <div class="ht-skill">Stakeholder Navigation</div>
+        <div class="ht-desc">Getting alignment across politics, egos, and competing priorities. Every company's biggest bottleneck is human coordination—not compute.</div>
+      </div>
+      <div class="ht-item">
+        <div class="ht-icon">⚖️</div>
+        <div class="ht-skill">Ethical Judgment</div>
+        <div class="ht-desc">Knowing what AI should not be asked to decide. Privacy, fairness, safety, and accountability cannot be delegated to a model. Someone must own these decisions.</div>
+      </div>
+      <div class="ht-item">
+        <div class="ht-icon">🎯</div>
+        <div class="ht-skill">Problem Framing</div>
+        <div class="ht-desc">Knowing the right question to ask is worth 10× the ability to answer it. AI solves well-framed problems excellently. It cannot identify which problems matter.</div>
+      </div>
+      <div class="ht-item">
+        <div class="ht-icon">🌐</div>
+        <div class="ht-skill">Deep Domain Expertise</div>
+        <div class="ht-desc">Healthcare regulation, financial compliance, security architecture, enterprise sales—domains where wrong answers have massive consequences that AI can't be trusted with alone.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: EVALUATOR -->
+<section class="evaluator" id="evaluator">
+  <div class="section-label" data-num="05">Personal Risk Assessment</div>
+  <h2 class="section-title">How Exposed<br>Are You?</h2>
+  <p class="section-intro">Enter your role and responsibilities. We'll analyze AI overlap in your specific tasks and give you a prioritized upskilling roadmap.</p>
+
+  <div class="eval-container">
+    <div class="eval-form-panel">
+      <div class="eval-form-title">Your Profile</div>
+
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="userName" placeholder="e.g. Rahul Sharma" />
+      </div>
+
+      <div class="form-group">
+        <label>Job Title / Role</label>
+        <select id="jobRole">
+          <option value="">— Select your role —</option>
+          <option value="sd1">Software Developer (Junior / SD1)</option>
+          <option value="sd2">Software Developer (Mid / SD2-SD3)</option>
+          <option value="senior-dev">Senior / Principal Engineer</option>
+          <option value="qa">QA / Testing Engineer</option>
+          <option value="devops">DevOps / SRE / Cloud Engineer</option>
+          <option value="data-analyst">Data Analyst / BI Analyst</option>
+          <option value="data-scientist">Data Scientist / ML Engineer</option>
+          <option value="pm">Product Manager</option>
+          <option value="designer">UX / UI Designer</option>
+          <option value="content">Technical Writer / Content Creator</option>
+          <option value="recruiter">Technical Recruiter</option>
+          <option value="support">IT Support / Helpdesk</option>
+          <option value="sales-tech">Sales Engineer / Solutions Consultant</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Company / Industry</label>
+        <input type="text" id="company" placeholder="e.g. Infosys, Startup, MNC" />
+      </div>
+
+      <div class="form-group">
+        <label>Years of Experience</label>
+        <select id="experience">
+          <option value="">— Select —</option>
+          <option value="0-2">0–2 years</option>
+          <option value="3-5">3–5 years</option>
+          <option value="6-10">6–10 years</option>
+          <option value="10+">10+ years</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Your Key Responsibilities (one per line)</label>
+        <textarea id="responsibilities" placeholder="e.g.&#10;Writing unit tests manually&#10;Building REST APIs from tickets&#10;Creating weekly reports in Excel&#10;Reviewing pull requests"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>AI Tools You Currently Use (if any)</label>
+        <input type="text" id="aiTools" placeholder="e.g. GitHub Copilot, ChatGPT, None" />
+      </div>
+
+      <button class="eval-btn" id="analyzeBtn" onclick="runAnalysis()">
+        Analyze My AI Risk →
+      </button>
+    </div>
+
+    <div class="eval-result-panel" id="resultPanel">
+      <div class="result-placeholder" id="resultPlaceholder">
+        <div class="icon">🔍</div>
+        <p>Fill in your profile and click Analyze to get your personalized AI impact assessment.</p>
+      </div>
+      <div class="result-content" id="resultContent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex; align-items:center; gap:1.5rem;">
+    <div class="f-logo">AI×Work</div>
+    <div style="font-size:0.7rem; color:rgba(255,255,255,0.3); border-left:1px solid rgba(255,255,255,0.1); padding-left:1.5rem;">By Sachit Malik</div>
+  </div>
+  <div>Data sourced from WEF, McKinsey, Bloomberg & public company reports · 2024</div>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Role data
+  const roleData = {
+    'sd1': {
+      name: 'Junior Software Developer (SD1)',
+      riskScore: 78,
+      riskColor: '#e63946',
+      riskLabel: 'High Displacement Risk',
+      overlaps: [
+        { task: 'Writing boilerplate & repetitive code', pct: 95, color: '#e63946' },
+        { task: 'Converting specs/tickets to functions', pct: 85, color: '#e63946' },
+        { task: 'Bug fixing with known patterns', pct: 80, color: '#ff6b6b' },
+        { task: 'Writing unit tests', pct: 90, color: '#e63946' },
+        { task: 'Code documentation / comments', pct: 88, color: '#e63946' },
+        { task: 'Architecture design', pct: 15, color: '#4caf50' },
+      ],
+      upskill: ['Prompt Engineering', 'System Design', 'AI-Augmented Dev', 'Cloud Architecture', 'LLM Fine-tuning', 'Code Review for AI'],
+      priority: ['System Design', 'AI-Augmented Dev', 'Prompt Engineering'],
+      insight: 'SD1 roles are contracting by 30–50% at AI-adopting companies. The shift is real and fast. Your competitive moat is no longer writing code—it\'s knowing what code to ask AI to write, and validating it rigorously. Become an AI orchestrator, not a code typist.'
+    },
+    'sd2': {
+      name: 'Mid-Level Software Developer',
+      riskScore: 52,
+      riskColor: '#c9a84c',
+      riskLabel: 'Moderate — Evolving Role',
+      overlaps: [
+        { task: 'Writing standard feature code', pct: 70, color: '#c9a84c' },
+        { task: 'PR review for style/syntax', pct: 65, color: '#c9a84c' },
+        { task: 'Writing integration tests', pct: 75, color: '#c9a84c' },
+        { task: 'Module-level architecture', pct: 35, color: '#4caf50' },
+        { task: 'Cross-team technical coordination', pct: 10, color: '#4caf50' },
+        { task: 'Mentoring juniors', pct: 5, color: '#4caf50' },
+      ],
+      upskill: ['LLM Integration', 'System Design', 'AI Code Review', 'Domain Expertise', 'Technical Leadership', 'RAG / Agents'],
+      priority: ['LLM Integration', 'System Design', 'Technical Leadership'],
+      insight: 'Mid-level devs are at a pivot point. Those who learn to architect systems that use AI as a component—rather than competing with AI as a coder—will leapfrog to senior roles. Your experience and context-awareness are moats AI lacks.'
+    },
+    'senior-dev': {
+      name: 'Senior / Principal Engineer',
+      riskScore: 22,
+      riskColor: '#4caf50',
+      riskLabel: 'Low Risk — High Leverage',
+      overlaps: [
+        { task: 'Writing specific implementations', pct: 55, color: '#c9a84c' },
+        { task: 'Technical decision-making', pct: 8, color: '#4caf50' },
+        { task: 'Org-wide architecture', pct: 5, color: '#4caf50' },
+        { task: 'Engineering culture / standards', pct: 3, color: '#4caf50' },
+        { task: 'Stakeholder communication', pct: 5, color: '#4caf50' },
+        { task: 'Novel problem-solving', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['AI System Architecture', 'LLM Ops', 'AI Safety & Eval', 'Multi-agent Systems', 'Responsible AI', 'Platform Engineering'],
+      priority: ['AI System Architecture', 'LLM Ops', 'AI Safety & Eval'],
+      insight: 'Senior engineers are gaining leverage from AI, not losing to it. A principal engineer who directs AI tooling can now do the output of 3–5 engineers. Focus on becoming the person who designs AI systems, defines evaluation criteria, and sets engineering strategy—not someone AI can replicate.'
+    },
+    'qa': {
+      name: 'QA / Testing Engineer',
+      riskScore: 85,
+      riskColor: '#e63946',
+      riskLabel: 'Very High Displacement Risk',
+      overlaps: [
+        { task: 'Writing manual test cases', pct: 95, color: '#e63946' },
+        { task: 'Regression testing execution', pct: 98, color: '#e63946' },
+        { task: 'Bug report writing', pct: 85, color: '#e63946' },
+        { task: 'Test script creation (Selenium/Cypress)', pct: 90, color: '#e63946' },
+        { task: 'Test coverage analysis', pct: 80, color: '#e63946' },
+        { task: 'Exploratory testing strategy', pct: 20, color: '#4caf50' },
+      ],
+      upskill: ['AI Test Orchestration', 'SDET (AI-Augmented)', 'Performance Engineering', 'Security Testing', 'Test Strategy', 'Shift-left Testing'],
+      priority: ['AI Test Orchestration', 'SDET (AI-Augmented)', 'Performance Engineering'],
+      insight: 'QA is the fastest-contracting tech role in 2024. Tools like Mabl, Testim, and Copilot for tests auto-generate and self-heal test suites. Survival means pivoting to QA leadership—owning test strategy, defining quality gates, and orchestrating AI testing pipelines rather than executing tests manually.'
+    },
+    'devops': {
+      name: 'DevOps / SRE / Cloud Engineer',
+      riskScore: 38,
+      riskColor: '#64b4ff',
+      riskLabel: 'Low-Medium — Evolving Fast',
+      overlaps: [
+        { task: 'Writing Terraform / IaC scripts', pct: 72, color: '#c9a84c' },
+        { task: 'Incident triage (Tier 1)', pct: 70, color: '#c9a84c' },
+        { task: 'Runbook / playbook documentation', pct: 85, color: '#e63946' },
+        { task: 'Log analysis & alerting config', pct: 65, color: '#c9a84c' },
+        { task: 'Multi-cloud architecture design', pct: 15, color: '#4caf50' },
+        { task: 'Security posture decisions', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['AI Infra / MLOps', 'Platform Engineering', 'FinOps', 'AI-Observability', 'LLM Deployment', 'Multi-agent Infra'],
+      priority: ['MLOps / LLM Deployment', 'Platform Engineering', 'AI-Observability'],
+      insight: 'DevOps engineers who pivot to MLOps and AI infrastructure are among the most sought-after roles in 2024–25. The cloud will be rebuilt around LLM serving, vector databases, and GPU clusters. Position yourself as the person who builds and runs AI systems at scale.'
+    },
+    'data-analyst': {
+      name: 'Data Analyst / BI Analyst',
+      riskScore: 68,
+      riskColor: '#e63946',
+      riskLabel: 'High — Significant Overlap',
+      overlaps: [
+        { task: 'Writing SQL queries', pct: 90, color: '#e63946' },
+        { task: 'Building Excel/Google Sheets models', pct: 88, color: '#e63946' },
+        { task: 'Creating dashboards / reports', pct: 75, color: '#c9a84c' },
+        { task: 'Data cleaning & preprocessing', pct: 80, color: '#e63946' },
+        { task: 'Business insight generation', pct: 35, color: '#c9a84c' },
+        { task: 'Stakeholder storytelling', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['Python / Advanced Analytics', 'AI-driven BI Tools', 'Business Acumen', 'Data Strategy', 'Predictive Modeling', 'NL-to-SQL Tools'],
+      priority: ['Business Acumen', 'AI-driven BI Tools', 'Predictive Modeling'],
+      insight: 'Tools like Microsoft Copilot, Tableau AI, and ChatGPT Advanced Data Analysis now perform 80% of standard analyst work from natural language prompts. Your survival strategy: move from "data wrangler" to "insight leader"—the person who asks the right business questions and interprets AI-generated analysis with domain expertise.'
+    },
+    'data-scientist': {
+      name: 'Data Scientist / ML Engineer',
+      riskScore: 30,
+      riskColor: '#64b4ff',
+      riskLabel: 'Low — High Leverage Potential',
+      overlaps: [
+        { task: 'Standard classification/regression models', pct: 70, color: '#c9a84c' },
+        { task: 'Model evaluation & tuning (AutoML)', pct: 60, color: '#c9a84c' },
+        { task: 'Feature engineering (standard)', pct: 65, color: '#c9a84c' },
+        { task: 'Novel research problems', pct: 5, color: '#4caf50' },
+        { task: 'LLM fine-tuning & deployment', pct: 10, color: '#4caf50' },
+        { task: 'AI safety & alignment', pct: 3, color: '#4caf50' },
+      ],
+      upskill: ['LLM Fine-tuning & RLHF', 'AI Agents & Orchestration', 'Vector DB & RAG', 'AI Evaluation Frameworks', 'Applied Research', 'Responsible AI'],
+      priority: ['LLM Fine-tuning', 'AI Agents & Orchestration', 'Responsible AI'],
+      insight: 'The ML engineer role is bifurcating: AutoML and foundation models are absorbing standard modeling work, while demand for LLM specialists, AI systems engineers, and safety researchers is exploding. Pivot toward foundation model work—the field is moving from "train your own model" to "orchestrate and align existing ones."'
+    },
+    'pm': {
+      name: 'Product Manager',
+      riskScore: 42,
+      riskColor: '#c9a84c',
+      riskLabel: 'Moderate — Pivoting Role',
+      overlaps: [
+        { task: 'Writing user stories / PRDs', pct: 80, color: '#e63946' },
+        { task: 'Competitive analysis documents', pct: 75, color: '#c9a84c' },
+        { task: 'Roadmap presentation creation', pct: 65, color: '#c9a84c' },
+        { task: 'Meeting notes & action items', pct: 90, color: '#e63946' },
+        { task: 'Customer insight synthesis', pct: 25, color: '#4caf50' },
+        { task: 'Strategic vision & prioritization', pct: 8, color: '#4caf50' },
+      ],
+      upskill: ['AI Product Strategy', 'Customer Research (Deep)', 'AI Literacy for PMs', 'Data Product Management', 'Prompt-based Prototyping', 'AI Ethics'],
+      priority: ['AI Product Strategy', 'Customer Research', 'AI Literacy for PMs'],
+      insight: 'The PM who spends 60% of their time writing specs and slide decks will be outpaced by AI. The PM who spends 60% with customers and synthesizes AI-generated analysis into strategic decisions will be irreplaceable. Shift your value from documentation to direction.'
+    },
+    'designer': {
+      name: 'UX / UI Designer',
+      riskScore: 45,
+      riskColor: '#c9a84c',
+      riskLabel: 'Moderate — Tool-Level Disruption',
+      overlaps: [
+        { task: 'Creating visual assets & mockups', pct: 72, color: '#c9a84c' },
+        { task: 'Generating design variations', pct: 80, color: '#e63946' },
+        { task: 'Icon / illustration creation', pct: 85, color: '#e63946' },
+        { task: 'Component library creation', pct: 65, color: '#c9a84c' },
+        { task: 'User research & synthesis', pct: 15, color: '#4caf50' },
+        { task: 'Interaction design strategy', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['AI Design Tools (Figma AI)', 'UX Research Methods', 'Conversational UI Design', 'AI Product Design', 'Accessibility Strategy', 'Design Systems at Scale'],
+      priority: ['UX Research Methods', 'AI Product Design', 'Conversational UI Design'],
+      insight: 'Visual production is being democratized—what took a designer 3 days now takes Midjourney 3 minutes. The safe zone: research-driven design thinking, AI product UX (designing for AI systems), and experience strategy. The designer who understands both human behavior and AI behavior will define the next decade of products.'
+    },
+    'content': {
+      name: 'Technical Writer / Content Creator',
+      riskScore: 82,
+      riskColor: '#e63946',
+      riskLabel: 'Very High Displacement Risk',
+      overlaps: [
+        { task: 'Writing blog posts / articles', pct: 92, color: '#e63946' },
+        { task: 'API documentation', pct: 88, color: '#e63946' },
+        { task: 'Social media content', pct: 95, color: '#e63946' },
+        { task: 'Product copy & descriptions', pct: 90, color: '#e63946' },
+        { task: 'Content strategy', pct: 30, color: '#c9a84c' },
+        { task: 'Brand voice definition', pct: 15, color: '#4caf50' },
+      ],
+      upskill: ['AI Content Strategy', 'Brand Positioning', 'SEO in the AI Age', 'AI Editing & QA', 'Multimedia Content', 'Thought Leadership'],
+      priority: ['AI Content Strategy', 'Brand Positioning', 'Thought Leadership'],
+      insight: 'Volume content creation—blogs, product descriptions, social posts, documentation—is effectively commoditized. The content roles that survive specialize in brand voice ownership, editorial strategy, and original reporting that requires genuine expertise and access. Become the strategist; let AI be the producer.'
+    },
+    'recruiter': {
+      name: 'Technical Recruiter',
+      riskScore: 80,
+      riskColor: '#e63946',
+      riskLabel: 'Very High Displacement Risk',
+      overlaps: [
+        { task: 'Resume screening & shortlisting', pct: 95, color: '#e63946' },
+        { task: 'Writing job descriptions', pct: 90, color: '#e63946' },
+        { task: 'Initial candidate outreach', pct: 88, color: '#e63946' },
+        { task: 'Interview scheduling', pct: 95, color: '#e63946' },
+        { task: 'Candidate experience & relationship', pct: 20, color: '#4caf50' },
+        { task: 'Strategic talent planning', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['Talent Intelligence Platforms', 'People Analytics', 'Employer Branding', 'HRBP / Strategic HR', 'Workforce Planning', 'AI Tool Curation'],
+      priority: ['Strategic HR / HRBP', 'People Analytics', 'Employer Branding'],
+      insight: 'AI recruiting platforms handle 80–90% of traditional recruiter workflows. The pivot is to become a Talent Intelligence lead—someone who defines hiring strategy, manages AI recruiting tools, builds employer brand, and handles high-touch executive placements. The volume recruiter role is disappearing; the strategic talent partner role is expanding.'
+    },
+    'support': {
+      name: 'IT Support / Helpdesk',
+      riskScore: 88,
+      riskColor: '#e63946',
+      riskLabel: 'Extremely High Risk',
+      overlaps: [
+        { task: 'Answering Tier-1 support tickets', pct: 98, color: '#e63946' },
+        { task: 'Password resets & access management', pct: 99, color: '#e63946' },
+        { task: 'Standard troubleshooting guides', pct: 92, color: '#e63946' },
+        { task: 'Software installation support', pct: 85, color: '#e63946' },
+        { task: 'Complex infrastructure issues', pct: 20, color: '#4caf50' },
+        { task: 'Security incident response', pct: 10, color: '#4caf50' },
+      ],
+      upskill: ['Cybersecurity Fundamentals', 'Cloud Infrastructure', 'IT Automation (Python)', 'SIEM / Security Tools', 'AI Tool Administration', 'Network Engineering'],
+      priority: ['Cybersecurity', 'Cloud Infrastructure', 'IT Automation'],
+      insight: 'Klarna\'s AI handled 700 agents\' worth of support in its first month. IT helpdesk automation is the fastest-moving area of AI enterprise adoption. The path forward: move up the stack to security, cloud infrastructure, or IT automation engineering. Staying in Tier-1 support means competing with AI that never takes breaks and costs pennies per ticket.'
+    },
+    'sales-tech': {
+      name: 'Sales Engineer / Solutions Consultant',
+      riskScore: 35,
+      riskColor: '#64b4ff',
+      riskLabel: 'Low-Medium — Relationship Moat',
+      overlaps: [
+        { task: 'Demo preparation & scripting', pct: 65, color: '#c9a84c' },
+        { task: 'RFP / proposal writing', pct: 72, color: '#c9a84c' },
+        { task: 'Technical documentation for clients', pct: 78, color: '#c9a84c' },
+        { task: 'Live customer demos', pct: 20, color: '#4caf50' },
+        { task: 'Complex enterprise solutioning', pct: 12, color: '#4caf50' },
+        { task: 'Executive relationship building', pct: 5, color: '#4caf50' },
+      ],
+      upskill: ['AI Product Expertise', 'Consultative Selling', 'Enterprise Architecture', 'Value Engineering', 'AI Demo Engineering', 'Vertical Specialization'],
+      priority: ['AI Product Expertise', 'Value Engineering', 'Vertical Specialization'],
+      insight: 'Sales engineers with deep domain expertise and genuine relationship skills are more valuable in the AI era—they understand both customer complexity and AI capabilities, bridging the gap no AI can currently fill. Focus on becoming the trusted advisor who can architect AI solutions for customer problems, not just demo features.'
+    }
+  };
+
+  function runAnalysis() {
+    const role = document.getElementById('jobRole').value;
+    const name = document.getElementById('userName').value.trim();
+    const company = document.getElementById('company').value.trim();
+    const exp = document.getElementById('experience').value;
+    const responsibilities = document.getElementById('responsibilities').value.trim();
+    const aiTools = document.getElementById('aiTools').value.trim();
+
+    if (!role) {
+      alert('Please select your job role to continue.');
+      return;
+    }
+
+    const btn = document.getElementById('analyzeBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="loading-spinner" style="display:inline-block; margin-right:8px;"></div> Analyzing...';
+
+    setTimeout(() => {
+      const data = roleData[role];
+      const displayName = name || 'Professional';
+      const displayCompany = company ? ` @ ${company}` : '';
+      const expText = exp ? ` · ${exp} yrs experience` : '';
+
+      // Analyze responsibilities for extra context
+      let customInsight = '';
+      if (responsibilities) {
+        const lowerResp = responsibilities.toLowerCase();
+        const highRisk = ['manual test', 'excel', 'reporting', 'copy paste', 'data entry', 'sql', 'documentation', 'boilerplate'];
+        const lowRisk = ['architecture', 'strategy', 'leadership', 'client', 'research', 'design thinking', 'system design'];
+        const hasHighRisk = highRisk.some(k => lowerResp.includes(k));
+        const hasLowRisk = lowRisk.some(k => lowerResp.includes(k));
+        if (hasHighRisk && !hasLowRisk) customInsight = `<div class="insight-box" style="border-color: var(--accent); color: rgba(255,255,255,0.7);">⚠️ Your listed responsibilities skew heavily toward execution-layer tasks that are well within AI's current capabilities. Prioritizing upskilling is urgent.</div>`;
+        else if (hasLowRisk) customInsight = `<div class="insight-box">✅ Your responsibilities include strategic and creative tasks that signal stronger AI resilience. Continue building these competencies.</div>`;
+      }
+
+      const aiToolsNote = aiTools && aiTools.toLowerCase() !== 'none' && aiTools.trim() !== ''
+        ? `<div class="insight-box" style="margin-top:0.75rem; border-color: #64b4ff; color: rgba(255,255,255,0.65);">🤖 You're already using: <strong style="color:#64b4ff">${aiTools}</strong>. You're ahead of 60% of your peers. Now deepen that fluency into your upskill areas.</div>`
+        : `<div class="insight-box" style="margin-top:0.75rem; border-color: #c9a84c; color: rgba(255,255,255,0.65);">💡 You haven't adopted AI tools yet. Starting with GitHub Copilot or ChatGPT in your daily workflow will immediately surface where AI overlaps with your work.</div>`;
+
+      const html = `
+        <div class="result-header">
+          <div class="result-name">${displayName}</div>
+          <div class="result-role-co">${data.name}${displayCompany}${expText}</div>
+        </div>
+
+        <div class="risk-meter">
+          <div class="risk-meter-label">Overall AI Displacement Risk</div>
+          <div class="risk-bar-wrap">
+            <div class="risk-bar-fill" id="riskBarFill" style="background: ${data.riskColor};"></div>
+          </div>
+          <div class="risk-score-text">
+            <span style="color: rgba(255,255,255,0.4); font-size:0.75rem;">${data.riskLabel}</span>
+            <span class="risk-score-val" style="color:${data.riskColor}">${data.riskScore}%</span>
+          </div>
+        </div>
+
+        <div class="overlap-section">
+          <div class="overlap-title">AI Overlap by Task Area</div>
+          ${data.overlaps.map(o => `
+            <div class="overlap-item">
+              <div class="overlap-dot" style="background:${o.color}"></div>
+              <div class="overlap-item-text">${o.task}</div>
+              <div class="overlap-pct" style="color:${o.color}">${o.pct}%</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="upskill-section">
+          <div class="overlap-title">Priority Upskilling Areas</div>
+          <div class="upskill-chips">
+            ${data.upskill.map(s => `<span class="chip ${data.priority.includes(s) ? 'priority' : ''}">${s}${data.priority.includes(s) ? ' ★' : ''}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="insight-box" style="margin-top: 1.5rem;">
+          ${data.insight}
+        </div>
+        ${customInsight}
+        ${aiToolsNote}
+      `;
+
+      document.getElementById('resultPlaceholder').style.display = 'none';
+      const rc = document.getElementById('resultContent');
+      rc.innerHTML = html;
+      rc.classList.add('visible');
+
+      btn.disabled = false;
+      btn.innerHTML = 'Re-analyze →';
+
+      // Animate risk bar
+      setTimeout(() => {
+        const bar = document.getElementById('riskBarFill');
+        if (bar) bar.style.width = data.riskScore + '%';
+      }, 100);
+
+    }, 1400);
+  }
+
+  // Enter key on form
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.activeElement.tagName !== 'TEXTAREA') {
+      runAnalysis();
+    }
+  });
+</script>
+</body>
+</html>
